@@ -23,6 +23,8 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Thể loại sách", "Index", "TheLoai")</li>
+                    <li>@Html.ActionLink("Sách", "ListSach", "Sach")</li>
                 </ul>
             </div>
         </div>
@@ -37,6 +39,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderSection("upload", required: false)
 </body>
 </html>
