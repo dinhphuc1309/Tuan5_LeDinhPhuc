@@ -117,5 +117,66 @@ namespace Tuan5_LeDinhPhuc.Controllers
             lstGiohang.Clear();
             return RedirectToAction("GioHang");
         }
+
+        [HttpGet]
+        public ActionResult DatHang()
+        {
+            if(Session["TaiKhoan"] == null || Session["TaiKhoan"].ToString()=="")
+            {
+                return RedirectToAction("DangNhap", "NguoiDung");
+
+            }
+            if (Session["Giohang"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            List<Giohang> lstGiohang = Laygiohang();
+            ViewBag.Tongsoluong = TongSoLuong();
+            ViewBag.Tongtien = TongTien();
+            ViewBag.Tongsoluongsanpham = TongSoLuongSanPham();
+            return View(lstGiohang);
+        }
+
+        [HttpPost]
+        public ActionResult DatHang(FormCollection collection)
+        {
+            DonHang dh = new DonHang();
+            KhachHang kh = (KhachHang)Session["TaiKhoan"];
+            Sach s = new Sach();
+
+            List<Giohang> gh = Laygiohang();
+            var ngaygiao = String.Format("{0:MM/dd/yyyy}", collection["NgayGiao"]);
+
+            dh.makh = kh.makh;
+            dh.ngaydat = DateTime.Now;
+            dh.ngaygiao = DateTime.Parse(ngaygiao);
+            dh.giaohang = false;
+            dh.thanhtoan = false;
+
+            data.DonHangs.InsertOnSubmit(dh);
+            data.SubmitChanges();
+            foreach (var item in gh)
+            {
+                ChiTietDonHang cthd = new ChiTietDonHang();
+                cthd.madon = dh.madon;
+                cthd.masach = item.masach;
+                cthd.soluong = item.iSoluong;
+                cthd.gia = (decimal)item.giaban;
+                s = data.Saches.Single(n => n.masach == item.masach);
+                s.soluongton -= cthd.soluong;
+                data.SubmitChanges();
+
+                data.ChiTietDonHangs.InsertOnSubmit(cthd);
+            }
+            data.SubmitChanges();
+            Session["Giohang"] = null;
+            return RedirectToAction("XacNhanDonhang", "Giohang");
+
+        }
+
+        public ActionResult XacnhanDonhang()
+        {
+            return View();
+        }
     }
 }
