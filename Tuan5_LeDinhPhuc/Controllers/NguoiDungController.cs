@@ -74,6 +74,7 @@ namespace Tuan5_LeDinhPhuc.Controllers
             {
                 ViewBag.ThongBao = "Chúc mừng đăng nhập thành công!";
                 Session["Taikhoan"] = kh;
+                Session["ten"] = kh.hoten;
             }
             else
             {

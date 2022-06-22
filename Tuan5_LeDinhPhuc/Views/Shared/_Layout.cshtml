@@ -21,11 +21,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Thể loại sách", "Index", "TheLoai")</li>
                     <li>@Html.ActionLink("Sách", "ListSach", "Sach")</li>
                     <li>@Html.Partial("~/Views/GioHang/GioHangPartial.cshtml")</li>
+                    @if (Session["Taikhoan"] == null)
+                    {
+                        <li>@Html.ActionLink("Resigter", "DangKy", "NguoiDung")</li>
+                        <li>@Html.ActionLink("Login", "DangNhap", "NguoiDung")</li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("LogOut","NguoiDung")">Đăng Xuất</a></li>
+                        <li><a href="#">@Session["ten"]</a></li>
+                    }
+
                 </ul>
             </div>
         </div>
